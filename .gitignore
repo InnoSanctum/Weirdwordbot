@@ -4,3 +4,4 @@ data/subscriptions.json
 utils/__pycache__/
 handlers/__pycache__/
 config.py
+misc/

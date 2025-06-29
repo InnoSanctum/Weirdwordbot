@@ -1,5 +1,5 @@
 from aiogram import Router
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command, CommandObject
 
 from utils.wordgen import get_fake_word
@@ -8,7 +8,24 @@ from scheduler import add_subscription, remove_subscription
 
 router = Router()
 
-@router.message(Command("ping"))
+@router.message(Command("start", "help"))
+async def start(message: Message):
+    kb = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="/слово")],
+            [KeyboardButton(text="/частота 15")],
+            [KeyboardButton(text="/частота 720")],
+            [KeyboardButton(text="/стоп")],
+        ],
+        resize_keyboard=True
+    )
+    await message.answer(
+        "Привет! Я WeirdWordBot — присылаю тебе странные слова с определениями.\n\nВыбери команду:",
+        reply_markup=kb
+    )
+
+
+@router.message(Command("слово"))
 async def send_fake_word(message: Message):
     word, definition = get_fake_word()
     await message.answer(f"🧠 Новое слово: *{word}*\nЗначение: _{definition}_", parse_mode="Markdown")
